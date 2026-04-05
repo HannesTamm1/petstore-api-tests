@@ -2,6 +2,9 @@ const request = require('supertest');
 const {
     BASE_URL
 } = require('./petstore.config');
+const {
+    expectPetShape
+} = require('./helpers');
 
 describe('Petstore GET endpoints - functional tests', () => {
     it('GET /store/inventory should return 200 and an object', async () => {
@@ -24,9 +27,7 @@ describe('Petstore GET endpoints - functional tests', () => {
         expect(Array.isArray(res.body)).toBe(true);
 
         if (res.body.length > 0) {
-            expect(res.body[0]).toHaveProperty('id');
-            expect(res.body[0]).toHaveProperty('name');
-            expect(res.body[0]).toHaveProperty('photoUrls');
+            expectPetShape(res.body[0]);
         }
     });
 
@@ -47,9 +48,7 @@ describe('Petstore GET endpoints - functional tests', () => {
         expect([200, 404]).toContain(res.status);
 
         if (res.status === 200) {
-            expect(res.body).toHaveProperty('id');
-            expect(res.body).toHaveProperty('name');
-            expect(res.body).toHaveProperty('photoUrls');
+            expectPetShape(res.body);
         }
 
         if (res.status === 404) {
