@@ -1,7 +1,8 @@
 # API Test Automation Summary
 
-Run `npm install` to instal all needed packages
-To run the project call `npm run dev` to start the app
+- Run `npm install` to instal all needed packages
+- Run `npm test` to run test cases
+- To run the project call `npm run dev` to start the app
 Application will be available at http://localhost:3000/
 
 ## Technologies Used
