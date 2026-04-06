@@ -1,5 +1,8 @@
 const request = require('supertest');
 const {
+    expectPetShape
+} = require('./helpers');
+const {
     BASE_URL
 } = require('./petstore.config');
 
@@ -34,19 +37,20 @@ describe('Petstore CRUD endpoints', () => {
             .set('Content-Type', 'application/json');
 
         expect([200, 201]).toContain(res.status);
-        expect(res.body).toHaveProperty('id', petPayload.id);
-        expect(res.body).toHaveProperty('name', petPayload.name);
-        expect(res.body).toHaveProperty('status', petPayload.status);
-        expect(Array.isArray(res.body.photoUrls)).toBe(true);
+        expectPetShape(res.body);
+        expect(res.body.id).toBe(petPayload.id);
+        expect(res.body.name).toBe(petPayload.name);
+        expect(res.body.status).toBe(petPayload.status);
     });
 
     it('GET /pet/{petId} should return the created pet', async () => {
         const res = await request(BASE_URL).get(`/pet/${testPetId}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty('id', testPetId);
-        expect(res.body).toHaveProperty('name', petPayload.name);
-        expect(res.body).toHaveProperty('status', petPayload.status);
+        expectPetShape(res.body);
+        expect(res.body.id).toBe(testPetId);
+        expect(res.body.name).toBe(petPayload.name);
+        expect(res.body.status).toBe(petPayload.status);
     });
 
     it('PUT /pet should update an existing pet', async () => {
@@ -65,9 +69,10 @@ describe('Petstore CRUD endpoints', () => {
         const res = await request(BASE_URL).get(`/pet/${testPetId}`);
 
         expect(res.status).toBe(200);
-        expect(res.body).toHaveProperty('id', testPetId);
-        expect(res.body).toHaveProperty('name', updatedPetPayload.name);
-        expect(res.body).toHaveProperty('status', updatedPetPayload.status);
+        expectPetShape(res.body);
+        expect(res.body.id).toBe(testPetId);
+        expect(res.body.name).toBe(updatedPetPayload.name);
+        expect(res.body.status).toBe(updatedPetPayload.status);
     });
 
     it('DELETE /pet/{petId} should delete the pet', async () => {
